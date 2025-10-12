@@ -3,6 +3,15 @@ import dbConnect from "@/lib/dbConnect";
 import Song from "@/models/Song";
 import { v2 as cloudinary } from "cloudinary";
 
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "50mb", // allow up to 50MB uploads
+    },
+  },
+};
+
 /**
  * Helper: upload buffer to cloudinary using upload_stream and return result.
  */
