@@ -1,52 +1,49 @@
-"use client";
-import React from "react";
-import Link from "next/link";
+"use client"
+import { useState } from "react"
+import Link from "next/link"
+import { Play, Download } from "lucide-react"
 
 export default function MusicCard({ song }) {
+  const [isPlaying, setIsPlaying] = useState(false)
+
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 dark:border-neutral-800 dark:bg-neutral-900 dark:focus-within:ring-offset-neutral-900">
-      <div className="relative">
-        <img
-          src={song.coverUrl || "/placeholder.svg"}
-          alt={song.title}
-          className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+    <div className="group flex items-center justify-between gap-4 px-4 py-3 rounded-lg border border-neutral-700 bg-neutral-800/50 hover:bg-neutral-700/50 transition-all duration-200 dark:hover:border-orange-500/30">
+      {/* Play Button */}
+      <button
+        onClick={() => setIsPlaying(!isPlaying)}
+        className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-orange-500 hover:bg-orange-600 text-white transition-all duration-200 hover:scale-110"
+      >
+        <Play className="h-5 w-5 fill-white" />
+      </button>
+
+      {/* Song Info */}
+      <div className="flex-1 min-w-0">
+        <h3 className="text-sm font-semibold text-white truncate">{song.title}</h3>
+        <p className="text-xs text-gray-400 truncate">{song.singer}</p>
       </div>
 
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 dark:text-gray-100">
-          {song.title}
-        </h3>
-        <p className="mt-1 text-sm text-gray-600 line-clamp-1 dark:text-gray-400">
-          {song.singer}
-        </p>
+      {/* Duration */}
+      <div className="flex-shrink-0 text-xs text-gray-400 font-medium">{song.duration || "3:45"}</div>
 
-        <div className="mt-4 flex items-center gap-3">
-          <audio
-            controls
-            src={song.audioUrl}
-            className="h-10 flex-1 rounded-md bg-gray-100 text-gray-900 dark:bg-neutral-800 dark:text-gray-100 [&::-webkit-media-controls-panel]:bg-transparent [&::-webkit-media-controls-enclosure]:rounded-md"
-          />
-          <a
-            href={song.audioUrl}
-            download
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900"
-          >
-            Download
-          </a>
-        </div>
+      {/* Action Buttons */}
+      <div className="flex-shrink-0 flex gap-2">
+        <a
+          href={song.audioUrl}
+          download
+          className="p-2 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 transition-all duration-200"
+          title="Download"
+        >
+          <Download className="h-4 w-4" />
+        </a>
 
-        <div className="mt-4">
-          <Link
-            href={`/song/${song._id}`}
-            className="inline-flex items-center text-sm font-medium text-blue-600 transition hover:text-blue-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-900"
-          >
-            Open
-            <span className="ml-1 transition-transform group-hover:translate-x-0.5">→</span>
-          </Link>
-        </div>
+        <Link
+          href={`/song/${song._id}`}
+          className="p-2 rounded-lg bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 transition-all duration-200"
+          title="Open"
+        >
+          <span className="text-sm">→</span>
+        </Link>
       </div>
     </div>
-  );
+  )
 }
